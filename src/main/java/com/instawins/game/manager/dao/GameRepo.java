@@ -12,6 +12,7 @@ public interface GameRepo extends CrudRepository<GameInfo, String> {
     public GameInfo findByGameId(UUID gameId);
     @Cacheable(value = "GameCache")
     public List<GameInfo> findByGameRoomTypeAndGameStatus(GameRoomType gameRoomType,String gameStatus);
+    public List<GameInfo> findByGameStatus(String gameStatus);
     @Cacheable(value = "GameCache")
     public List<GameInfo> findAll();
 
