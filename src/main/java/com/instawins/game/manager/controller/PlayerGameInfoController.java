@@ -16,19 +16,19 @@ public class PlayerGameInfoController {
     //Get all games for a player Id
     @GetMapping("/game/get/player")
     public GenericServiceResponse getAllGamesForPlayer(@RequestParam String playerId){
-        return service.getGamesForPlayer(playerId);
+        return service.getAllGames(playerId);
     }
 
     //Get active games for a player Id
     @GetMapping("/game/get/open")
     public GenericServiceResponse getOpenGamesForPlayer(@RequestParam String playerId){
-        return service.getOpenGamesForPlayer(playerId);
+        return service.getOpenGames(playerId);
     }
 
     //Get closed games for a player Id
     @GetMapping("/game/get/closed")
     public GenericServiceResponse getClosedGamesForPlayer(@RequestParam String playerId){
-        return service.getClosedGamesForPlayer(playerId);
+        return service.getClosedGames(playerId);
     }
 
 

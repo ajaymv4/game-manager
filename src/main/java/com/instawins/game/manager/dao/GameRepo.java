@@ -1,5 +1,6 @@
 package com.instawins.game.manager.dao;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -9,7 +10,9 @@ public interface GameRepo extends CrudRepository<GameInfo, String> {
 
     public GameInfo save(GameInfo gameInfo);
     public GameInfo findByGameId(UUID gameId);
-    public List<GameInfo> findByGameRoomType(GameRoomType gameRoomType);
+    @Cacheable(value = "GameCache")
+    public List<GameInfo> findByGameRoomTypeAndGameStatus(GameRoomType gameRoomType,String gameStatus);
+    @Cacheable(value = "GameCache")
     public List<GameInfo> findAll();
 
 }

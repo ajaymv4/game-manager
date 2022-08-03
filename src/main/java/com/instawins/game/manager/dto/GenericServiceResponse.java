@@ -19,8 +19,8 @@ public class GenericServiceResponse {
 
     private List<PlayerDetailResponse> playerDetail;
 
-    public List<GameDetail> getGameDetail() {
-        return gameDetails;
+    public GameDetail getGameDetail() {
+        return gameDetail;
     }
 
     public List<GameDetail> getGameDetails() {

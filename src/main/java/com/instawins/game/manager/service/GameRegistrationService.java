@@ -40,7 +40,7 @@ public class GameRegistrationService {
         //TODO: Add logic to check if user exists?
         //TODO: If same user wants to enter same game type.
         GameRoomType gameRoomType = getGameRoomType(gameRoomTypeId);
-        List<GameInfo> gameRooms = gameRepo.findByGameRoomType(gameRoomType);
+        List<GameInfo> gameRooms = gameRepo.findByGameRoomTypeAndGameStatus(gameRoomType,GameStatusType.OPEN.toString());
 
         GameInfo game = new GameInfo();
 
@@ -99,6 +99,9 @@ public class GameRegistrationService {
         players.add(newPlayer);
 
         gameRoom.setPlayerGameInfo(players);
+        if(gameRoom.getGameRoomType().getGameRoomSize()==gameRoom.getPlayerGameInfo().size()){
+            gameRoom.setGameStatus(GameStatusType.CLOSED.toString());
+        }
         gameRepo.save(gameRoom);
     }
 
