@@ -63,13 +63,15 @@ public class DrawBallMachineService {
     /**
      * Returns a random number for a max value passed
      *
-     * @param max
+     * TODO: Look at using more secured and latest apache RNG (https://commons.apache.org/proper/commons-rng/userguide/rng.html)
+     *
+     * @param seed
      * @return
      */
-    public int generateRandomNumber(int max) {
-        if (max > 0) {
+    public int generateRandomNumber(int seed) {
+        if (seed > 0) {
             RandomDataGenerator randomDataGenerator = new RandomDataGenerator();
-            return randomDataGenerator.nextInt(1, max);
+            return randomDataGenerator.nextInt(1, seed);
         }
         return 0;
     }

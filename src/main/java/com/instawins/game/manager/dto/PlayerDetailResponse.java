@@ -11,6 +11,10 @@ public class PlayerDetailResponse {
         this.tokenId = tokenId;
     }
 
+    public PlayerDetailResponse(String playerId) {
+        this.playerId = playerId;
+    }
+
     public PlayerDetailResponse(String playerId, String tokenId, GameDetail gameDetails) {
         this.playerId = playerId;
         this.tokenId = tokenId;

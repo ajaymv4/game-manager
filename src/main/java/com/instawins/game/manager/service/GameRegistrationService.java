@@ -42,12 +42,14 @@ public class GameRegistrationService {
         GameRoomType gameRoomType = getGameRoomType(gameRoomTypeId);
         List<GameInfo> gameRooms = gameRepo.findByGameRoomTypeAndGameStatus(gameRoomType,GameStatusType.OPEN.toString());
 
+        PlayerDetailResponse newPlayer = new PlayerDetailResponse(player);
+
         GameInfo game = new GameInfo();
 
         if (CollectionUtils.isEmpty(gameRooms)) {
             //If there is no such game room
             game = createGameRoom(gameRoomType);
-            addPlayerToGameRoom(player, game);
+            addPlayerToGameRoom(newPlayer, game);
 
         } else {
             //If there is an existing game room
@@ -55,7 +57,7 @@ public class GameRegistrationService {
                 game = existingGameRoom;
                 if (existingGameRoom.getPlayerGameInfo().size() < gameRoomType.getGameRoomSize()) {
                     //Add player to existing game room
-                    addPlayerToGameRoom(player, existingGameRoom);
+                    addPlayerToGameRoom(newPlayer, existingGameRoom);
                 } else {
                     //When game room limit is exceeded , Update existing game room and create a new one
                     existingGameRoom.setGameStatus(GameStatusType.CLOSED.toString());
@@ -64,7 +66,7 @@ public class GameRegistrationService {
                     game = createGameRoom(gameRoomType);
                     log.debug("New game created with details {}", game);
 
-                    addPlayerToGameRoom(player, game);
+                    addPlayerToGameRoom(newPlayer, game);
                 }
             }
         }
@@ -75,18 +77,20 @@ public class GameRegistrationService {
         gameDetail.setTotalPlayers(game.getPlayerGameInfo().size());
         response.setGameDetails(gameDetail);
 
-        PlayerDetailResponse playerDetails = new PlayerDetailResponse(game.getPlayerGameInfo().get(0).getPlayerId(), game.getPlayerGameInfo().get(0).getTokenId());
+        PlayerDetailResponse playerDetails = new PlayerDetailResponse(player, newPlayer.getTokenId());
         response.setPlayer(playerDetails);
 
         return response;
 
     }
 
-    private void addPlayerToGameRoom(String player, GameInfo gameRoom) {
+    private void addPlayerToGameRoom(PlayerDetailResponse player, GameInfo gameRoom) {
         //Add player to game Room
         PlayerGameInfo newPlayer = new PlayerGameInfo();
-        newPlayer.setPlayerId(player);
-        newPlayer.setTokenId(generateTokenId(player));
+
+        String newPlayerToken = generateTokenId(player.getPlayerId());
+        player.setTokenId(newPlayerToken);
+        newPlayer.setTokenId(newPlayerToken);
 
         log.debug("Created a new player with details ::", newPlayer);
 
