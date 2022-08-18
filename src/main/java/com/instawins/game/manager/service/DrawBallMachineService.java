@@ -4,14 +4,13 @@ import com.instawins.game.manager.dao.GameInfo;
 import com.instawins.game.manager.dao.GameRepo;
 import com.instawins.game.manager.dao.GameStatusType;
 import com.instawins.game.manager.dto.GameResult;
+import org.apache.commons.rng.UniformRandomProvider;
+import org.apache.commons.rng.simple.RandomSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.apache.commons.math3.random.RandomDataGenerator;
+//import org.apache.commons.math3.random.RandomDataGenerator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -40,10 +39,15 @@ public class DrawBallMachineService {
 
     private Map<String, String> chooseLuckyWinners(GameInfo game) {
 
+        //Get all the tokens from the pot
         List<String> tokens = game.getPlayerGameInfo().stream()
                 .map(player -> player.getTokenId())
                 .collect(Collectors.toList());
 
+        //Shuffle it one more time before choosing winner.
+        Collections.shuffle(tokens);
+
+        //Map to store results
         Map<String, String> results = new HashMap<>();
 
         int max = tokens.size();
@@ -62,17 +66,23 @@ public class DrawBallMachineService {
 
     /**
      * Returns a random number for a max value passed
-     *
-     * TODO: Look at using more secured and latest apache RNG (https://commons.apache.org/proper/commons-rng/userguide/rng.html)
+     * <p>
+     * INFO: more secured and latest apache RNG (https://commons.apache.org/proper/commons-rng/userguide/rng.html)
+     * <p>
+     * int n = rng.nextInt(); // Integer.MIN_VALUE <= n <= Integer.MAX_VALUE.
+     * int m = rng.nextInt(max); // 0 <= m < max.
      *
      * @param seed
      * @return
      */
     public int generateRandomNumber(int seed) {
+        int randomNumber = 0;
+        UniformRandomProvider rng = RandomSource.MT.create(RandomSource.MWC_256);
         if (seed > 0) {
-            RandomDataGenerator randomDataGenerator = new RandomDataGenerator();
-            return randomDataGenerator.nextInt(1, seed);
+            while (randomNumber <= 0) {
+                randomNumber = rng.nextInt(seed + 1);
+            }
         }
-        return 0;
+        return randomNumber;
     }
 }

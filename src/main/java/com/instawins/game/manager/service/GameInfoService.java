@@ -47,6 +47,7 @@ public class GameInfoService {
         GenericServiceResponse response = new GenericServiceResponse();
         List<PlayerDetailResponse> playersList = new ArrayList<>();
         GameInfo game = gameRepo.findByGameId(gameId);
+        //TODO:Handle game not found response
         List<PlayerGameInfo> players = game.getPlayerGameInfo();
         players.forEach(player -> {
             log.debug(player);

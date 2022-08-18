@@ -91,6 +91,7 @@ public class GameRegistrationService {
         String newPlayerToken = generateTokenId(player.getPlayerId());
         player.setTokenId(newPlayerToken);
         newPlayer.setTokenId(newPlayerToken);
+        newPlayer.setPlayerId(player.getPlayerId());
 
         log.debug("Created a new player with details ::", newPlayer);
 
