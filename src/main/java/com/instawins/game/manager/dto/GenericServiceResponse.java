@@ -10,6 +10,9 @@ public class GenericServiceResponse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<GameDetail> gameDetails;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<PlayerGameInfoResponse> playerGameDetails;
+
    private GameDetail gameDetail;
     private String message;
 
@@ -45,5 +48,13 @@ public class GenericServiceResponse {
 
     public void setPlayerDetail(List<PlayerDetailResponse> playerDetail) {
         this.playerDetail = playerDetail;
+    }
+
+    public List<PlayerGameInfoResponse> getPlayerGameDetails() {
+        return playerGameDetails;
+    }
+
+    public void setPlayerGameDetails(List<PlayerGameInfoResponse> playerGameDetails) {
+        this.playerGameDetails = playerGameDetails;
     }
 }

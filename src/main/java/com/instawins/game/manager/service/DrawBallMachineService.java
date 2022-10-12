@@ -7,6 +7,7 @@ import com.instawins.game.manager.dto.GameResult;
 import org.apache.commons.rng.UniformRandomProvider;
 import org.apache.commons.rng.simple.RandomSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 //import org.apache.commons.math3.random.RandomDataGenerator;
 
@@ -26,7 +27,7 @@ public class DrawBallMachineService {
         List<GameInfo> closedGames = gameRepo.findByGameStatus(GameStatusType.CLOSED.toString());
         List<GameResult> results = new ArrayList<>();
         closedGames.forEach(closedGame -> {
-            Map<String, String> winners = chooseLuckyWinners(closedGame);
+            Map<String, String> winners = chooseThreeLuckyWinners(closedGame);
             gameRepo.save(closedGame);
             GameResult result = new GameResult();
             result.setGameId(closedGame.getGameId());
@@ -37,7 +38,7 @@ public class DrawBallMachineService {
         return results;
     }
 
-    private Map<String, String> chooseLuckyWinners(GameInfo game) {
+    private Map<String, String> chooseThreeLuckyWinners(GameInfo game) {
 
         //Get all the tokens from the pot
         List<String> tokens = game.getPlayerGameInfo().stream()

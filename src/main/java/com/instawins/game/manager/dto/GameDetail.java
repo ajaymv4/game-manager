@@ -13,6 +13,7 @@ public class GameDetail {
     private String thirdPos;
     private String gameStatusType;
     private GameRoomType gameRoomType;
+
     private int totalPlayers;
 
     public int getTotalPlayers() {
